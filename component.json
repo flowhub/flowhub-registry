@@ -1,0 +1,12 @@
+{
+  "name": "flowhub-registry",
+  "description": "Flowhub runtime registry API",
+  "author": "Henri Bergius <henri.bergius@iki.fi>",
+  "license": "MIT",
+  "dependencies": {
+    "visionmedia/superagent": "*"
+  },
+  "scripts": [
+    "index.js"
+  ]
+}
