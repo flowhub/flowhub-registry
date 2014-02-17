@@ -34,7 +34,6 @@ describe 'User\'s Runtime Registry', ->
     rt.register (err, ok) ->
       chai.expect(err).to.be.a 'null'
       registry.list token, options, (err, runtimes) ->
-        console.log runtimes
         chai.expect(runtimes).to.be.an 'array'
         found = false
         runtimes.forEach (runtime) ->
