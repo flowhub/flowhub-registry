@@ -1,0 +1,14 @@
+{
+  "name": "flowhub-registry",
+  "version": "0.0.0",
+  "description": "Flowhub runtime registry API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Henri Bergius <henri.bergius@iki.fi>",
+  "license": "MIT",
+  "dependencies": {
+    "superagent": "~0.16.0"
+  }
+}
