@@ -1,4 +1,7 @@
 var superagent = require('superagent');
+var defaults = {
+  host: 'https://flowhub-api.herokuapp.com'
+};
 
 exports.Runtime = function (runtime, options) {
   if (typeof runtime !== 'object') {
@@ -9,10 +12,10 @@ exports.Runtime = function (runtime, options) {
   }
 
   this.runtime = runtime;
-
-  this.options = {
-    host: 'https://flowhub-api.herokuapp.com'
-  };
+  this.options = {};
+  Object.keys(defaults).forEach(function (name) {
+    this.options[name] = defaults[name];
+  }.bind(this));
 
   if (options) {
     Object.keys(options).forEach(function (name) {
@@ -79,4 +82,37 @@ exports.Runtime.prototype.del = function (token, callback) {
   superagent.del(this.options.host + '/runtimes/' + this.runtime.id)
   .set('Authorization', 'Bearer ' + token)
   .end(callback);
+};
+
+exports.list = function (token, options, callback) {
+  if (!token) {
+    throw new Error('API token required for fetching');
+  }
+  if (!callback) {
+    callback = options;
+    options = {};
+  }
+
+  Object.keys(defaults).forEach(function (name) {
+    if (options[name]) {
+      return;
+    }
+    options[name] = defaults[name];
+  }.bind(this));
+
+  superagent.get(options.host + '/runtimes/')
+  .set('Authorization', 'Bearer ' + token)
+  .end(function (err, res) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    var results = [];
+    res.body.forEach(function (result) {
+      result.registered = new Date(result.registered);
+      result.seen = new Date(result.seen);
+      results.push(new exports.Runtime(result, options));
+    });
+    callback(null, results);
+  });
 };

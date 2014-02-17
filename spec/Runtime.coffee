@@ -7,7 +7,7 @@ id = require('uuid').v4()
 secret = 'hello world'
 
 options = {}
-# options.host: 'http://localhost:5000'
+# options.host = 'http://localhost:5000'
 
 unless owner and token
   throw new Error 'Test environment data missing'
