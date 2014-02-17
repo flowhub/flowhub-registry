@@ -39,24 +39,33 @@ exports.Runtime.prototype.register = function (callback) {
   .end(callback);
 };
 
-exports.Runtime.prototype.ping = function () {
+exports.Runtime.prototype.ping = function (callback) {
   superagent.post(this.options.host + '/runtimes/' + this.runtime.id)
   .send({})
-  .end(function (err, res) {});
+  .end(function (err, res) {
+    if (callback) {
+      callback(err);
+    }
+  });
 };
 
 exports.Runtime.prototype.get = function (token, callback) {
   if (!token) {
-    throw new Error('API token required for deletion');
+    throw new Error('API token required for fetching');
   }
   superagent.get(this.options.host + '/runtimes/' + this.runtime.id)
+  .set('Authorization', 'Bearer ' + token)
   .end(function (err, res) {
     if (err) {
       callback(err);
       return;
     }
-    Object.keys(res).forEach(function (name) {
-      this.runtime[name] = res[name];
+    Object.keys(res.body).forEach(function (name) {
+      if (name == 'seen' || name == 'registered') {
+        this.runtime[name] = new Date(res.body[name]);
+        return;
+      }
+      this.runtime[name] = res.body[name];
     }.bind(this));
     callback(null, this.runtime);
   }.bind(this));
@@ -68,5 +77,6 @@ exports.Runtime.prototype.del = function (token, callback) {
     throw new Error('API token required for deletion');
   }
   superagent.del(this.options.host + '/runtimes/' + this.runtime.id)
+  .set('Authorization', 'Bearer ' + token)
   .end(callback);
 };
