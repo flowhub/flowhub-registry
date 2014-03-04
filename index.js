@@ -1,6 +1,6 @@
 var superagent = require('superagent');
 var defaults = {
-  host: 'https://flowhub-api.herokuapp.com'
+  host: 'https://api.flowhub.io'
 };
 
 exports.Runtime = function (runtime, options) {
