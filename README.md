@@ -12,17 +12,17 @@ var flowhub = require('flowhub-registry');
 var rt = new flowhub.Runtime({
   // Human-readable label for the runtime
   label: 'My home NoFlo system',
-  // Unique identifier of the runtime instance
+  // Unique identifier of the runtime instance (must be valid UUID)
   id: '754c5dc0-97e9-11e3-a5e2-0800200c9a66',
-  // Flowhub user that should have access to the runtime
+  // Flowhub user that should have access to the runtime (must be valid UUID)
   user: '89454800-97e9-11e3-a5e2-0800200c9a66',
   // Protocol to be used, eg. websocket, iframe, or webrtc
   protocol: 'websocket',
   // URL to the runtime
   address: 'ws://some.server.address:3569',
-  // Type of the runtime, eg. NoFlo
-  type: 'NoFlo',
-  // Secret string for the user to utilize for communication
+  // Type of the runtime, eg. noflo-nodejs or microflo
+  type: 'noflo-nodejs',
+  // Secret string for the user to utilize for communication (optional)
   secret: 'C6sxubeP22u4'
 });
 
