@@ -6,6 +6,9 @@
   "dependencies": {
     "visionmedia/superagent": "*"
   },
+  "remotes": [
+    "https://raw.githubusercontent.com"
+  ],
   "scripts": [
     "index.js"
   ]
