@@ -63,6 +63,10 @@ exports.Runtime.prototype.get = function (token, callback) {
       callback(err);
       return;
     }
+    if (res.status !== 200) {
+      callback(new Error('Request returned ' + res.status));
+      return;
+    }
     Object.keys(res.body).forEach(function (name) {
       if (name == 'seen' || name == 'registered') {
         this.runtime[name] = new Date(res.body[name]);
@@ -105,6 +109,10 @@ exports.list = function (token, options, callback) {
   .end(function (err, res) {
     if (err) {
       callback(err);
+      return;
+    }
+    if (res.status !== 200) {
+      callback(new Error('Request returned ' + res.status));
       return;
     }
     var results = [];
