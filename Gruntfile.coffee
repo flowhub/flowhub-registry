@@ -11,14 +11,14 @@ module.exports = ->
         command: 'node ./node_modules/component/bin/component build -u component-json,component-coffee -o browser -n flowhub-api -c'
 
     # BDD tests on Node.js
-    cafemocha:
+    mochaTest:
       nodejs:
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
 
   @loadNpmTasks 'grunt-exec'
-  @loadNpmTasks 'grunt-cafe-mocha'
+  @loadNpmTasks 'grunt-mocha-test'
 
   @registerTask 'build', ['exec:install', 'exec:build']
-  @registerTask 'test', ['build', 'cafemocha']
+  @registerTask 'test', ['build', 'mochaTest']
