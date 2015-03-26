@@ -26,16 +26,20 @@ exports.Runtime = function (runtime, options) {
 
 exports.Runtime.prototype.register = function (callback) {
   if (!this.runtime.user) {
-    throw new Error('Runtime registration requires a user UUID');
+    callback (new Error('Runtime registration requires a user UUID'));
+    return;
   }
   if (!this.runtime.address) {
-    throw new Error('Runtime registration requires an address URL');
+    callback (new Error('Runtime registration requires an address URL'));
+    return;
   }
   if (!this.runtime.protocol) {
-    throw new Error('Runtime registration requires a protocol');
+    callback (new Error('Runtime registration requires a protocol'));
+    return;
   }
   if (!this.runtime.type) {
-    throw new Error('Runtime registration requires a type');
+    callback (new Error('Runtime registration requires a type'));
+    return;
   }
   superagent.put(this.options.host + '/runtimes/' + this.runtime.id)
   .send(this.runtime)
