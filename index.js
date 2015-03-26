@@ -58,7 +58,7 @@ exports.Runtime.prototype.ping = function (callback) {
 
 exports.Runtime.prototype.get = function (token, callback) {
   if (!token) {
-    throw new Error('API token required for fetching');
+    return callback(new Error('API token required for fetching'));
   }
   superagent.get(this.options.host + '/runtimes/' + this.runtime.id)
   .set('Authorization', 'Bearer ' + token)
@@ -85,7 +85,7 @@ exports.Runtime.prototype.get = function (token, callback) {
 
 exports.Runtime.prototype.del = function (token, callback) {
   if (!token) {
-    throw new Error('API token required for deletion');
+    return callback(new Error('API token required for deletion'));
   }
   superagent.del(this.options.host + '/runtimes/' + this.runtime.id)
   .set('Authorization', 'Bearer ' + token)
@@ -94,7 +94,7 @@ exports.Runtime.prototype.del = function (token, callback) {
 
 exports.list = function (token, options, callback) {
   if (!token) {
-    throw new Error('API token required for fetching');
+    return callback(new Error('API token required for fetching'));
   }
   if (!callback) {
     callback = options;
