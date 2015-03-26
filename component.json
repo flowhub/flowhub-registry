@@ -4,7 +4,7 @@
   "author": "Henri Bergius <henri.bergius@iki.fi>",
   "license": "MIT",
   "dependencies": {
-    "visionmedia/superagent": "*"
+    "visionmedia/superagent": "0.21.0"
   },
   "remotes": [
     "https://raw.githubusercontent.com"
