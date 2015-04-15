@@ -3,6 +3,11 @@ var defaults = {
   host: 'https://api.flowhub.io'
 };
 
+Object.defineProperty(exports, "PING_INTERVAL", {
+    value:      10 * 60 * 1000,
+    enumerable: true
+  });
+
 exports.Runtime = function (runtime, options) {
   if (typeof runtime !== 'object') {
     throw new Error('Runtime options expected');
