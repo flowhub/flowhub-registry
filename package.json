@@ -1,6 +1,6 @@
 {
   "name": "flowhub-registry",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Flowhub runtime registry API",
   "main": "index.js",
   "scripts": {
