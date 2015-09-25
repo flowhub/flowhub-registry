@@ -9,17 +9,17 @@
   "author": "Henri Bergius <henri.bergius@iki.fi>",
   "license": "MIT",
   "dependencies": {
-    "superagent": "~0.16.0"
+    "superagent": "0.16.0"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-exec": "~0.4.5",
+    "grunt": "0.4.5",
+    "grunt-exec": "0.4.6",
     "component-builder": "git://github.com/bergie/builder.js.git#patch-1",
-    "component-json": "~0.1.4",
-    "component-coffee": "~0.1.4",
-    "component": "~0.17.6",
-    "grunt-cafe-mocha": "~0.1.11",
-    "uuid": "~1.4.1",
-    "chai": "~1.9.0"
+    "component-json": "0.1.4",
+    "component-coffee": "0.1.4",
+    "component": "0.17.6",
+    "grunt-cafe-mocha": "0.1.13",
+    "uuid": "1.4.2",
+    "chai": "1.9.2"
   }
 }
