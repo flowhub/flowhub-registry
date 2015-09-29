@@ -20,6 +20,6 @@
     "component": "0.17.6",
     "grunt-cafe-mocha": "0.1.13",
     "uuid": "2.0.1",
-    "chai": "1.9.2"
+    "chai": "3.3.0"
   }
 }
