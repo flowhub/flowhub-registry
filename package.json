@@ -9,7 +9,7 @@
   "author": "Henri Bergius <henri.bergius@iki.fi>",
   "license": "MIT",
   "dependencies": {
-    "superagent": "1.6.1"
+    "superagent": "1.8.1"
   },
   "devDependencies": {
     "grunt": "0.4.5",
