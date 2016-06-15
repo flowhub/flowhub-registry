@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "grunt": "0.4.5",
-    "grunt-exec": "0.4.6",
+    "grunt-exec": "1.0.0",
     "component-builder": "git://github.com/bergie/builder.js.git#patch-1",
     "component-json": "0.1.4",
     "component-coffee": "0.1.4",
