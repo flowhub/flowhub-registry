@@ -24,6 +24,8 @@ exports.updateRuntime = (id) ->
   nock('https://api.flowhub.io')
   .put("/runtimes/#{id}")
   .reply((path, requestBody, done) ->
+    if runtimes[id] and requestBody.secret isnt runtimes[id].secret
+      return done null, [403, 'Unauthorized to modify runtime']
     runtimes[id] = {} unless runtimes[id]
     body = if typeof requestBody is 'object' then requestBody else JSON.parse requestBody
     for key, val of body
@@ -84,7 +86,7 @@ exports.deleteRuntime = (id) ->
     unless runtimes[id].user is user.id
       return done null, [403, 'Unauthorized']
     delete runtimes[id]
-    done null, [200]
+    done null, [204]
   )
 
 exports.cleanUp = ->
