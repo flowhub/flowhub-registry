@@ -6,6 +6,10 @@ module.exports = ->
     # Browser build of NoFlo
     noflo_browser:
       build:
+        options:
+          exposed_modules:
+            'flowhub-registry': './index'
+            'uuid': 'uuid'
         files:
           'browser/flowhub-registry.js': ['package.json']
 
