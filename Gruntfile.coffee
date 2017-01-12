@@ -10,18 +10,19 @@ module.exports = ->
           'browser/flowhub-registry.js': ['package.json']
 
     # BDD tests on Node.js
-    cafemocha:
+    mochaTest:
       nodejs:
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
 
-  @loadNpmTasks 'grunt-cafe-mocha'
+  @loadNpmTasks 'grunt-noflo-browser'
+  @loadNpmTasks 'grunt-mocha-test'
 
   @registerTask 'build', [
     'noflo_browser'
   ]
   @registerTask 'test', [
     'build',
-    'cafemocha'
+    'mochaTest'
   ]
