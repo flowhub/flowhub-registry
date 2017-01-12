@@ -19,6 +19,7 @@ module.exports = ->
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
+          grep: process.env.TESTS
 
   @loadNpmTasks 'grunt-noflo-browser'
   @loadNpmTasks 'grunt-mocha-test'
