@@ -24,10 +24,10 @@ exports.updateRuntime = (id) ->
   nock('https://api.flowhub.io')
   .put("/runtimes/#{id}")
   .reply((path, requestBody, done) ->
-    if runtimes[id] and requestBody.secret isnt runtimes[id].secret
+    body = if typeof requestBody is 'object' then requestBody else JSON.parse requestBody
+    if runtimes[id] and body.secret isnt runtimes[id].secret
       return done null, [403, 'Unauthorized to modify runtime']
     runtimes[id] = {} unless runtimes[id]
-    body = if typeof requestBody is 'object' then requestBody else JSON.parse requestBody
     for key, val of body
       runtimes[id][key] = val
     now = new Date

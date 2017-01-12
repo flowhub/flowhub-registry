@@ -56,7 +56,19 @@ describe 'Runtime', ->
         chai.expect(pingRuntime.isDone()).to.equal true
         chai.expect(getRuntime.isDone()).to.equal true
         done()
-
+  it 'should be possible to update', (done) ->
+    newAddress = 'ws://example.net:3569'
+    updateRuntime = mocks.updateRuntime inputData.id
+    getRuntime = mocks.getRuntime inputData.id
+    rt.runtime.address = newAddress
+    rt.register (err) ->
+      return done err if err
+      chai.expect(updateRuntime.isDone()).to.equal true
+      rt.get user.token, (err) ->
+        return done err if err
+        chai.expect(rt.runtime.address).to.equal newAddress
+        chai.expect(getRuntime.isDone()).to.equal true
+        done()
   it 'should be possible to delete', (done) ->
     deleteRuntime = mocks.deleteRuntime inputData.id
     getRuntime = mocks.getRuntime inputData.id
