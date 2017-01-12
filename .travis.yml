@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '0.10'
+- '4.6'
 before_script:
 - npm install -g grunt-cli
 sudo: false
@@ -10,9 +10,9 @@ env:
   - secure: PJSZrDqlO7UVYi3hvWv74rxIiTw82NLaUZ0GcKEtRIpK3NxXEgrKfWu/9oymkLoLPtXiRBiFSc3FgGWNSxsxRU3cS/QWGfo6TXXeYC+psZY5Oq7n57Y87O1nnflDYBZLXJFCPKrS0Nt7/1AHlCNaypieJoks5B0oS/Si6emsaCs=
 deploy:
   provider: npm
-  email: jononor@gmail.com
+  email: henri.bergius@iki.fi
   api_key:
-    secure: Mvq1BgliSn3modj+cbm8grQmF/S4e7FU/nCdGAC/PgdKgHqK2yVZT7RcMqjk96uyUM0oeqiQg7qOjz+c/5Mx+jNFM5W1QJ1eCa7FEZ8dIhLrpkgYUn0k8xnGAMxEV2nxNIcNDNmDNA+iLkPL8zHxr26RMNR4QKjNcUr9gw2igR4=
+    secure: QQcTXOvabTxvF42v/KwoQfVMGyCXHd/2FYKwe8ODy/+SZmGmpidv3hdmXsRQCERkLu7nBLyFLn/HwN8N+/n09iCsLoEx+W3ZIORaBf9HeaagQXtS0SrcbHgJ+kz4g6CgsAJbbr1DUinpd3gi2H3QvfuJIbbdrsTUd3d275J0BOw=
   on:
     tags: true
-    repo: the-grid/flowhub-registry
+    repo: flowhub/flowhub-registry
