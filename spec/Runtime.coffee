@@ -1,54 +1,70 @@
 registry = require '../index'
 chai = require 'chai'
-
-owner = process.env.USER_ID
-token = process.env.USER_TOKEN
-id = require('uuid').v4()
-secret = 'hello world'
-
-options = {}
-# options.host = 'http://localhost:5000'
-
-unless owner and token
-  throw new Error 'Test environment data missing'
+uuid = require 'uuid'
+mocks = require './helpers/mocks'
 
 describe 'Runtime', ->
-  data =
-    id: id
-    label: 'Test runtime'
-    user: owner
-    protocol: 'websocket'
-    address: 'ws://localhost:3569'
-    type: 'test'
-    secret: 'hello world'
-  rt = new registry.Runtime data, options
+  options = {}
+  inputData = null
+  secret = 'hello world'
+  user = null
+  rt = null
   firstseen = null
+  before ->
+    user = mocks.setupUser uuid.v4()
+    inputData =
+      id: uuid.v4()
+      label: 'Test runtime'
+      user: user.id
+      protocol: 'websocket'
+      address: 'ws://localhost:3569'
+      type: 'test'
+      secret: secret
+    rt = new registry.Runtime inputData, options
+  after ->
+    mocks.cleanUp()
 
   it 'should be possible to register', (done) ->
+    updateRuntime = mocks.updateRuntime inputData.id
     rt.register (err, ok) ->
-      chai.expect(err).to.be.a 'null'
+      return done err if err
+      chai.expect(updateRuntime.isDone()).to.equal true
       done()
   it 'should be possible to fetch', (done) ->
-    rt.get token, (err, ok) ->
-      chai.expect(err).to.be.a 'null'
-      for name, value of data
+    getRuntime = mocks.getRuntime inputData.id
+    rt.get user.token, (err, ok) ->
+      return done err if err
+      for name, value of inputData
         chai.expect(rt.runtime[name]).to.equal value
       chai.expect(rt.runtime.registered.getTime()).to.be.above 0
       chai.expect(rt.runtime.seen.getTime()).to.be.above 0
       firstseen = rt.runtime.seen
+      chai.expect(getRuntime.isDone()).to.equal true
       done()
   it 'when pinged the "seen" value should change', (done) ->
+    pingRuntime = mocks.pingRuntime inputData.id
+    getRuntime = mocks.getRuntime inputData.id
+
     # First we ping
     rt.ping (err) ->
-      chai.expect(err).to.be.a 'null'
+      return done err if err
 
       # Then we fetch
-      rt.get token, (err, ok) ->
-        chai.expect(err).to.be.a 'null'
+      rt.get user.token, (err, ok) ->
+        return done err if err
         chai.expect(rt.runtime.seen.getTime()).to.be.above firstseen.getTime()
+        chai.expect(pingRuntime.isDone()).to.equal true
+        chai.expect(getRuntime.isDone()).to.equal true
         done()
 
   it 'should be possible to delete', (done) ->
-    rt.del token, (err, ok) ->
-      chai.expect(err).to.be.a 'null'
-      done()
+    deleteRuntime = mocks.deleteRuntime inputData.id
+    getRuntime = mocks.getRuntime inputData.id
+    rt.del user.token, (err, ok) ->
+      return done err if err
+      # Verify that it is gone
+      rt.get user.token, (err, ok) ->
+        chai.expect(err).to.be.an 'error'
+        chai.expect(deleteRuntime.isDone()).to.equal true
+        chai.expect(getRuntime.isDone()).to.equal true
+        done()
