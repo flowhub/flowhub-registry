@@ -1,51 +1,63 @@
 registry = require '../index'
 chai = require 'chai'
+uuid = require 'uuid'
+mocks = require './helpers/mocks'
 
-owner = process.env.USER_ID
-token = process.env.USER_TOKEN
 id = require('uuid').v4()
 secret = 'hello world'
 
-options = {}
 # options.host = 'http://localhost:5000'
 
-unless owner and token
-  throw new Error 'Test environment data missing'
-
 describe 'User\'s Runtime Registry', ->
-  data =
-    id: id
-    label: 'Test runtime'
-    user: owner
-    protocol: 'websocket'
-    address: 'ws://localhost:3569'
-    type: 'test'
-    secret: 'hello world'
-  rt = new registry.Runtime data, options
+  options = {}
+  inputData = null
+  secret = 'hello world'
+  user = null
+  rt = null
+  before ->
+    user = mocks.setupUser uuid.v4()
+    inputData =
+      id: uuid.v4()
+      label: 'Test runtime'
+      user: user.id
+      protocol: 'websocket'
+      address: 'ws://localhost:3569'
+      type: 'test'
+      secret: secret
+    rt = new registry.Runtime inputData, options
+  after ->
+    mocks.cleanUp()
 
   it 'should not contain the runtime before registering', (done) ->
-    registry.list token, options, (err, runtimes) ->
-      chai.expect(err).to.be.a 'null'
-      chai.expect(runtimes).to.be.an 'array'
-      runtimes.forEach (runtime) ->
-        chai.expect(runtime.runtime.id).to.not.equal id
+    listRuntimes = mocks.listRuntimes()
+    registry.list user.token, options, (err, runtimes) ->
+      return done err if err
+      chai.expect(runtimes).to.eql []
+      chai.expect(listRuntimes.isDone()).to.equal true
       done()
   it 'should contain the runtime after registering', (done) ->
+    updateRuntime = mocks.updateRuntime inputData.id
+    listRuntimes = mocks.listRuntimes()
     rt.register (err, ok) ->
-      chai.expect(err).to.be.a 'null'
-      registry.list token, options, (err, runtimes) ->
+      return done err if err
+      registry.list user.token, options, (err, runtimes) ->
+        return done err if err
         chai.expect(runtimes).to.be.an 'array'
         found = false
         runtimes.forEach (runtime) ->
-          found = true if runtime.runtime.id is id
+          found = true if runtime.runtime.id is inputData.id
         chai.expect(found).to.be.true
+        chai.expect(updateRuntime.isDone()).to.equal true
+        chai.expect(listRuntimes.isDone()).to.equal true
         done()
   it 'should not contain the runtime after deletion', (done) ->
-    rt.del token, (err, ok) ->
-      chai.expect(err).to.be.a 'null'
-      registry.list token, options, (err, runtimes) ->
-        chai.expect(err).to.be.a 'null'
-        chai.expect(runtimes).to.be.an 'array'
-        runtimes.forEach (runtime) ->
-          chai.expect(runtime.runtime.id).to.not.equal id
+    deleteRuntime = mocks.deleteRuntime inputData.id
+    listRuntimes = mocks.listRuntimes()
+    rt.del user.token, (err, ok) ->
+      return done err if err
+      registry.list user.token, options, (err, runtimes) ->
+        return done err if err
+        chai.expect(runtimes).to.eql []
+        chai.expect(deleteRuntime.isDone()).to.equal true
+        chai.expect(listRuntimes.isDone()).to.equal true
         done()

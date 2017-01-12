@@ -3,22 +3,31 @@ module.exports = ->
   @initConfig
     pkg: @file.readJSON 'package.json'
 
-    # Browser version building
-    exec:
-      install:
-        command: 'node ./node_modules/component/bin/component install'
+    # Browser build of NoFlo
+    noflo_browser:
       build:
-        command: 'node ./node_modules/component/bin/component build -u component-json,component-coffee -o browser -n flowhub-api -c'
+        options:
+          exposed_modules:
+            'flowhub-registry': './index'
+            'uuid': 'uuid'
+        files:
+          'browser/flowhub-registry.js': ['package.json']
 
     # BDD tests on Node.js
-    cafemocha:
+    mochaTest:
       nodejs:
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
+          grep: process.env.TESTS
 
-  @loadNpmTasks 'grunt-exec'
-  @loadNpmTasks 'grunt-cafe-mocha'
+  @loadNpmTasks 'grunt-noflo-browser'
+  @loadNpmTasks 'grunt-mocha-test'
 
-  @registerTask 'build', ['exec:install', 'exec:build']
-  @registerTask 'test', ['build', 'cafemocha']
+  @registerTask 'build', [
+    'noflo_browser'
+  ]
+  @registerTask 'test', [
+    'build',
+    'mochaTest'
+  ]
