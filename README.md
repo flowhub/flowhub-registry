@@ -1,6 +1,8 @@
 Flowhub Runtime Registry library [![Build Status](https://secure.travis-ci.org/flowhub/flowhub-registry.png?branch=master)](http://travis-ci.org/flowhub/flowhub-registry)
 ================================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/flowhub/flowhub-registry.svg)](https://greenkeeper.io/)
+
 This library provides easy access to the [Flowhub](http://flowhub.io) runtime registry. It is intended to be used by [Flow-Based Programming Protocol](http://noflojs.org/documentation/protocol/) compatible clients to register themselves available for Flowhub users.
 
 Usage:
