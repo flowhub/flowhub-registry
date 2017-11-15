@@ -29,7 +29,11 @@ exports.Runtime = function (runtime, options) {
   }
 };
 
-exports.Runtime.prototype.register = function (callback) {
+exports.Runtime.prototype.register = function (token, callback) {
+  if (typeof token === 'function') {
+    callback = token;
+    token = null;
+  }
   if (!this.runtime.user) {
     callback (new Error('Runtime registration requires a user UUID'));
     return;
@@ -44,6 +48,13 @@ exports.Runtime.prototype.register = function (callback) {
   }
   if (!this.runtime.type) {
     callback (new Error('Runtime registration requires a type'));
+    return;
+  }
+  if (token) {
+    superagent.put(this.options.host + '/runtimes/' + this.runtime.id)
+    .set('Authorization', 'Bearer ' + token)
+    .send(this.runtime)
+    .end(callback);
     return;
   }
   superagent.put(this.options.host + '/runtimes/' + this.runtime.id)
