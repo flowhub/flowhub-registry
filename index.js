@@ -105,7 +105,14 @@ exports.Runtime.prototype.del = function (token, callback) {
   }
   superagent.del(this.options.host + '/runtimes/' + this.runtime.id)
   .set('Authorization', 'Bearer ' + token)
-  .end(callback);
+  .end(function (err, res) {
+    if (err && err.status === 404) {
+      // If the runtime is already gone, that is fine too
+      callback();
+      return;
+    }
+    callback(err, res);
+  });
 };
 
 exports.list = function (token, options, callback) {

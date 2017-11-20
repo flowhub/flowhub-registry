@@ -80,3 +80,9 @@ describe 'Runtime', ->
         chai.expect(deleteRuntime.isDone()).to.equal true
         chai.expect(getRuntime.isDone()).to.equal true
         done()
+  it 'should be possible to call delete on removed runtime', (done) ->
+    deleteRuntime = mocks.deleteRuntime inputData.id
+    getRuntime = mocks.getRuntime inputData.id
+    rt.del user.token, (err, ok) ->
+      return done err if err
+      done()
