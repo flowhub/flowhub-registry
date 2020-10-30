@@ -153,7 +153,7 @@ function list(token, o, c) {
       }
       const results = [];
       res.body.forEach((result) => {
-        results.push(new exports.Runtime({
+        results.push(new Runtime({
           ...result,
           registered: new Date(result.registered),
           seen: new Date(result.seen),
