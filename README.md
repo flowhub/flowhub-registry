@@ -6,10 +6,10 @@ This library provides easy access to the [Flowhub](http://flowhub.io) runtime re
 Usage:
 
 ```javascript
-var flowhub = require('flowhub-registry');
+const flowhub = require('flowhub-registry');
 
 // Prepare runtime information
-var rt = new flowhub.Runtime({
+const rt = new flowhub.Runtime({
   // Human-readable label for the runtime
   label: 'My home NoFlo system',
   // Unique identifier of the runtime instance (must be valid UUID)
