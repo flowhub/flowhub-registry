@@ -26,7 +26,7 @@ module.exports = function() {
     // BDD tests on Node.js
     mochaTest: {
       nodejs: {
-        src: ['spec/*.coffee'],
+        src: ['spec/*.js'],
         options: {
           reporter: 'spec',
           grep: process.env.TESTS
