@@ -4,6 +4,7 @@
   "description": "Flowhub runtime registry API",
   "main": "index.js",
   "scripts": {
+    "pretest": "eslint *.js spec/*.js",
     "test": "grunt test"
   },
   "bin": {
@@ -22,6 +23,11 @@
   "devDependencies": {
     "chai": "^4.0.0",
     "coffee-loader": "^0.9.0",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-chai": "0.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-mocha": "^8.0.0",
     "fbp-loader": "^0.1.1",
     "grunt": "^1.0.1",
     "grunt-mocha-test": "^0.13.2",

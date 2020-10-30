@@ -1,3 +1,4 @@
 /node_modules/
 /browser/
 /components/*/
+package-lock.json
