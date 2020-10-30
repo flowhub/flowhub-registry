@@ -26,14 +26,16 @@ exports.updateRuntime = (id) ->
   .reply((path, requestBody, done) ->
     body = if typeof requestBody is 'object' then requestBody else JSON.parse requestBody
     if runtimes[id] and body.secret isnt runtimes[id].secret
-      return done null, [403, 'Unauthorized to modify runtime']
+      done null, [403, 'Unauthorized to modify runtime']
+      return
     runtimes[id] = {} unless runtimes[id]
     for key, val of body
       runtimes[id][key] = val
     now = new Date
     runtimes[id].seen = now
     runtimes[id].registered = now unless runtimes[id].registered
-    done null, runtimes[id]
+    done null, [200, runtimes[id]]
+    return
   )
 
 exports.pingRuntime = (id) ->
@@ -41,9 +43,11 @@ exports.pingRuntime = (id) ->
   .post("/runtimes/#{id}")
   .reply((path, requestBody, done) ->
     unless runtimes[id]
-      return done null, [404, 'Runtime not found']
+      done null, [404, 'Runtime not found']
+      return
     runtimes[id].seen = new Date
     done null, [200]
+    return
   )
 
 exports.listRuntimes = ->
@@ -52,12 +56,14 @@ exports.listRuntimes = ->
   .reply((path, requestBody, done) ->
     user = exports.authenticate @req.headers
     unless user
-      return done null, [401, 'Authentication required']
+      done null, [401, 'Authentication required']
+      return
     userRuntimes = []
     for id, runtime of runtimes
       continue unless runtime.user is user.id
       userRuntimes.push runtime
-    done null, userRuntimes
+    done null, [200, userRuntimes]
+    return
   )
 
 exports.getRuntime = (id) ->
@@ -66,12 +72,16 @@ exports.getRuntime = (id) ->
   .reply((path, requestBody, done) ->
     user = exports.authenticate @req.headers
     unless user
-      return done null, [401, 'Authentication required']
+      done null, [401, 'Authentication required']
+      return
     unless runtimes[id]
-      return done null, [404, 'Runtime not found']
+      done null, [404, 'Runtime not found']
+      return
     unless runtimes[id].user is user.id
-      return done null, [403, 'Unauthorized']
-    done null, runtimes[id]
+      done null, [403, 'Unauthorized']
+      return
+    done null, [200, runtimes[id]]
+    return
   )
 
 exports.deleteRuntime = (id) ->
@@ -80,13 +90,17 @@ exports.deleteRuntime = (id) ->
   .reply((path, requestBody, done) ->
     user = exports.authenticate @req.headers
     unless user
-      return done null, [401, 'Authentication required']
+      done null, [401, 'Authentication required']
+      return
     unless runtimes[id]
-      return done null, [404, 'Runtime not found']
+      done null, [404, 'Runtime not found']
+      return
     unless runtimes[id].user is user.id
-      return done null, [403, 'Unauthorized']
+      done null, [403, 'Unauthorized']
+      return
     delete runtimes[id]
     done null, [204]
+    return
   )
 
 exports.cleanUp = ->
