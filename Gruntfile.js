@@ -1,9 +1,4 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-module.exports = function() {
+module.exports = function () {
   // Project configuration
   this.initConfig({
     pkg: this.file.readJSON('package.json'),
@@ -14,13 +9,13 @@ module.exports = function() {
         options: {
           exposed_modules: {
             'flowhub-registry': './index',
-            'uuid': 'uuid'
-          }
+            uuid: 'uuid',
+          },
         },
         files: {
-          'browser/flowhub-registry.js': ['package.json']
-        }
-      }
+          'browser/flowhub-registry.js': ['package.json'],
+        },
+      },
     },
 
     // BDD tests on Node.js
@@ -29,20 +24,20 @@ module.exports = function() {
         src: ['spec/*.js'],
         options: {
           reporter: 'spec',
-          grep: process.env.TESTS
-        }
-      }
-    }
+          grep: process.env.TESTS,
+        },
+      },
+    },
   });
 
   this.loadNpmTasks('grunt-noflo-browser');
   this.loadNpmTasks('grunt-mocha-test');
 
   this.registerTask('build', [
-    'noflo_browser'
+    'noflo_browser',
   ]);
-  return this.registerTask('test', [
+  this.registerTask('test', [
     'build',
-    'mochaTest'
+    'mochaTest',
   ]);
 };
