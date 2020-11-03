@@ -20,11 +20,13 @@ exports.authenticate = function (headers) {
     return null;
   }
   const token = headers.authorization.substr(7);
-  for (const id in users) {
-    const user = users[id];
-    if (user.token === token) { return user; }
-  }
-  return null;
+  let user = null;
+  Object.keys(users).forEach((id) => {
+    if (users[id].token === token) {
+      user = users[id];
+    }
+  });
+  return user;
 };
 
 exports.updateRuntime = (id) => nock('https://api.flowhub.io')
@@ -36,10 +38,10 @@ exports.updateRuntime = (id) => nock('https://api.flowhub.io')
       return;
     }
     if (!runtimes[id]) { runtimes[id] = {}; }
-    for (const key in body) {
+    Object.keys(body).forEach((key) => {
       const val = body[key];
       runtimes[id][key] = val;
-    }
+    });
     const now = new Date();
     runtimes[id].seen = now;
     if (!runtimes[id].registered) { runtimes[id].registered = now; }
@@ -66,11 +68,13 @@ exports.listRuntimes = () => nock('https://api.flowhub.io')
       return;
     }
     const userRuntimes = [];
-    for (const id in runtimes) {
+    Object.keys(runtimes).forEach((id) => {
       const runtime = runtimes[id];
-      if (runtime.user !== user.id) { continue; }
+      if (runtime.user !== user.id) {
+        return;
+      }
       userRuntimes.push(runtime);
-    }
+    });
     done(null, [200, userRuntimes]);
   });
 
